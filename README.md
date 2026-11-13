@@ -2,6 +2,55 @@
 
 A Figma plugin that chats with Claude Code. Claude can inspect and edit the open file, check its work with screenshots, read files in your project, and use your Claude Code skills. You can pick the model and effort level from the panel.
 
+## Install
+
+You'll need:
+
+- the **Figma desktop app**, because development plugins don't run in the browser;
+- **Node.js 18 or later**;
+- **Claude Code access**: either sign in once by running `claude` in a terminal, or set `ANTHROPIC_API_KEY`. The bridge uses the same login.
+
+### 1. Get the code and build the plugin
+
+```bash
+git clone https://github.com/LukeFinch/figma-claude.git
+cd figma-claude
+npm install
+npm run build
+```
+
+This writes the built plugin to `dist/`.
+
+### 2. Add the plugin to Figma
+
+1. Open any design file in the Figma desktop app.
+2. Go to **Plugins → Development → Import plugin from manifest…**
+3. Choose **`dist/manifest.json`**. Use the one in `dist/`, not the `manifest.json` in the project root: that one points at source files Figma can't run.
+
+You only need to do this once. After a rebuild, Figma picks up the new files.
+
+### 3. Start the bridge
+
+```bash
+npm run bridge
+```
+
+It prints a pairing code like `ABCD-1234`. Leave this terminal open: the plugin only works while the bridge is running.
+
+### 4. Pair and start prompting
+
+1. In Figma, run **Plugins → Development → Claude for Figma**.
+2. Paste the pairing code and click **Pair**. The code is saved, so you only do this once.
+3. Select something on the canvas and ask Claude about it, or describe what to build.
+
+Next time, start the bridge with `npm run bridge` and open the plugin; it connects on its own.
+
+**Troubleshooting**
+
+- **"Bridge not running":** start `npm run bridge`. The panel retries every few seconds.
+- **Asked to pair again:** the code changed, for example because `~/.figma-claude/token` was deleted. Copy the new code from the bridge terminal.
+- **Claude should work in a different project folder:** start the bridge with `FIGMA_CLAUDE_CWD=/path/to/project npm run bridge`.
+
 ## How it works
 
 A Figma plugin can't run Node or spawn processes, so a small local bridge hosts the [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) and the plugin talks to it over a WebSocket.
@@ -63,19 +112,9 @@ By default Claude gets read-only built-in tools plus `Write`/`Edit`. A `PreToolU
 
 Any page in your browser can open a socket to `127.0.0.1`, so the bridge only accepts connections that present its pairing code. The code is generated once and stored in `~/.figma-claude/token`. The bridge prints it at startup; you enter it in the plugin once and it is saved in Figma's client storage. To rotate it, delete that file.
 
-## Setup
+## Configuration
 
-```bash
-npm install
-npm run bridge        # prints the pairing code; keep it running
-npm run dev           # or `npm run build` for a standalone build
-```
-
-In Figma desktop: **Plugins → Development → Import plugin from manifest…** and pick **`dist/manifest.json`**. The root `manifest.json` points at the source files that plugma reads; Figma can't load it.
-
-Claude uses your existing Claude Code login, or `ANTHROPIC_API_KEY` if set.
-
-### Bridge options
+The bridge reads these environment variables, e.g. `FIGMA_CLAUDE_MODEL=opus npm run bridge`.
 
 | Variable | Default | |
 | --- | --- | --- |
@@ -92,6 +131,6 @@ Claude uses your existing Claude Code login, or `ANTHROPIC_API_KEY` if set.
 | --- | --- |
 | `npm run bridge` | Start the bridge |
 | `npm run bridge:dev` | Bridge with restart on change |
-| `npm run dev` | Plugin dev build with hot reload |
+| `npm run dev` | Plugin dev build with hot reload (keep it running while you develop) |
 | `npm run build` | Production plugin build into `dist/` |
 | `npm run typecheck` | Typecheck the plugin and bridge |

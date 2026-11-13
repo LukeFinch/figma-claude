@@ -1,6 +1,6 @@
 {
   "name": "Claude for Figma",
-  "id": "1000000000000000001",
+"id": "1703088146549957771",
   "api": "1.0.0",
   "main": "src/main.tsx",
   "ui": "src/ui.tsx",
@@ -19,6 +19,6 @@
     "reasoning": "Allow local development domains"
   },
   "permissions": [],
-  "documentAccess": "dynamic",
+  "documentAccess": "dynamic-page",
   "enablePrivatePluginApi": true
 }
