@@ -1,0 +1,24 @@
+{
+  "name": "Claude for Figma",
+  "id": "1000000000000000001",
+  "api": "1.0.0",
+  "main": "src/main.tsx",
+  "ui": "src/ui.tsx",
+  "editorType": [
+    "figma"
+  ],
+  "networkAccess": {
+    "allowedDomains": [
+      "*"
+    ],
+    "devAllowedDomains": [
+      "http://localhost:3305",
+      "ws://localhost:3305",
+      "ws://localhost:3306"
+    ],
+    "reasoning": "Allow local development domains"
+  },
+  "permissions": [],
+  "documentAccess": "dynamic",
+  "enablePrivatePluginApi": true
+}

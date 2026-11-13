@@ -1,0 +1,31 @@
+{
+  "name": "claude-figma-ui",
+  "version": "0.1.0",
+  "description": "Claude Code UI for Figma using the Claude Agent SDK",
+  "type": "module",
+  "scripts": {
+    "dev": "plugma dev",
+    "build": "plugma build",
+    "preview": "plugma preview",
+    "bridge": "tsx bridge/server.ts",
+    "bridge:dev": "tsx watch bridge/server.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.323",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ws": "^8.22.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.142.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/ws": "^8.18.2",
+    "plugma": "latest",
+    "tsx": "^4.23.15",
+    "typescript": "^5.3.0"
+  }
+}
